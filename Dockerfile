@@ -1,11 +1,11 @@
-FROM ubuntu:artful
+FROM ubuntu:bionic
 
 USER root
 
 # Install the things needed
 RUN apt-get update
 RUN apt-get install -yq build-essential
-RUN apt-get install -yq libreadline6 libreadline6-dev
+RUN apt-get install -yq libreadline7 libreadline-dev
 RUN apt-get install -yq wget
 RUN apt-get install -yq git
 
