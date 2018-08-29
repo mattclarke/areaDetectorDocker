@@ -62,6 +62,41 @@ RUN mv calc /opt/epics/modules
 COPY files/calc_RELEASE /opt/epics/modules/calc/configure/RELEASE
 RUN rm R3-7-1.tar.gz
 
+# Download AreaDetector
+RUN wget --quiet https://github.com/areaDetector/areaDetector/archive/R3-3-2.tar.gz
+RUN tar xvzf R3-3-2.tar.gz
+RUN mv areaDetector-R3-3-2 areaDetector
+RUN mv areaDetector /opt/epics/modules
+RUN rm R3-3-2.tar.gz
+
+# Download ADCore
+RUN wget --quiet https://github.com/areaDetector/ADCore/archive/R3-3-2.tar.gz
+RUN tar xvzf R3-3-2.tar.gz
+RUN mv ADCore-R3-3-2 ADCore
+RUN mv ADCore /opt/epics/modules/areaDetector
+RUN rm R3-3-2.tar.gz
+
+# Download ADSupport
+RUN wget --quiet https://github.com/areaDetector/ADSupport/archive/R1-4.tar.gz
+RUN tar xvzf R1-4.tar.gz
+RUN mv ADSupport-R1-4 ADSupport
+RUN mv ADSupport /opt/epics/modules/areaDetector
+RUN rm R1-4.tar.gz
+
+# Download ADSimDetector
+RUN wget --quiet https://github.com/areaDetector/ADSimDetector/archive/R2-8.tar.gz
+RUN tar xvzf R2-8.tar.gz
+RUN mv ADSimDetector-R2-8 ADSimDetector
+RUN mv ADSimDetector /opt/epics/modules/areaDetector
+RUN rm R2-8.tar.gz
+
+# Copy AreaDetector config files in
+COPY files/AD_CONFIG_SITE.local /opt/epics/modules/areaDetector/configure/CONFIG_SITE.local
+COPY files/AD_RELEASE_LIBS.local /opt/epics/modules/areaDetector/configure/RELEASE_LIBS.local
+COPY files/AD_RELEASE_PRODS.local /opt/epics/modules/areaDetector/configure/RELEASE_PRODS.local
+COPY files/AD_RELEASE_SUPPORT.local /opt/epics/modules/areaDetector/configure/RELEASE_SUPPORT.local
+COPY files/AD_RELEASE.local /opt/epics/modules/areaDetector/configure/RELEASE.local
+
 # Build EPICS base
 RUN cd /opt/epics/base && make
 
@@ -79,3 +114,16 @@ RUN cd /opt/epics/modules/sscan && make
 
 # Build Calc
 RUN cd /opt/epics/modules/calc && make
+
+# Build AreaDetector
+RUN cd /opt/epics/modules/areaDetector && make
+
+# Build sim detector IOC
+RUN cd /opt/epics/modules/areaDetector/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector && make
+
+# Expose the standard EPICS ports
+EXPOSE 5064 5065
+EXPOSE 5064/udp
+
+# Start the IOC
+CMD cd /opt/epics/modules/areaDetector/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/ && ../../bin/linux-x86_64/simDetectorApp st.cmd
