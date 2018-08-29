@@ -120,10 +120,14 @@ RUN cd /opt/epics/modules/areaDetector && make
 
 # Build sim detector IOC
 RUN cd /opt/epics/modules/areaDetector/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector && make
+COPY files/AD_st_base.cmd /opt/epics/modules/areaDetector/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/st_base.cmd
 
 # Expose the standard EPICS ports
 EXPOSE 5064 5065
 EXPOSE 5064/udp
+
+# Set path
+RUN export PATH=/opt/epics/base/bin/linux-x86_64:$PATH
 
 # Start the IOC
 CMD cd /opt/epics/modules/areaDetector/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/ && ../../bin/linux-x86_64/simDetectorApp st.cmd
