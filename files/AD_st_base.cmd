@@ -48,3 +48,6 @@ dbLoadRecords("NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,
 set_requestfile_path("$(ADSIMDETECTOR)/simDetectorApp/Db")
 
 iocInit()
+
+dbpf 13SIM1:image1:EnableCallbacks 1
+dbpf 13SIM1:cam1:Acquire 1
