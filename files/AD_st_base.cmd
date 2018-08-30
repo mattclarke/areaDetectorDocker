@@ -24,7 +24,7 @@ epicsEnvSet("MAX_THREADS", "8")
 # The search path for database files
 epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db")
 
-epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "100000000")
+epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "1100000")
 
 asynSetMinTimerPeriod(0.001)
 
