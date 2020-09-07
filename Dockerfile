@@ -3,11 +3,11 @@ FROM ubuntu:bionic
 USER root
 
 # Install the things needed
-RUN apt-get update
-RUN apt-get install -yq build-essential
-RUN apt-get install -yq libreadline7 libreadline-dev
-RUN apt-get install -yq wget
-RUN apt-get install -yq git
+RUN apt update
+RUN apt install -yq build-essential
+RUN apt install -yq libreadline7 libreadline-dev
+RUN apt install -yq curl
+RUN apt install -yq git
 
 # Setup directory structure
 RUN mkdir /opt/epics
@@ -96,7 +96,6 @@ RUN mv ADSimDetector /opt/epics/modules/areaDetector
 COPY files/AD_CONFIG_SITE.local /opt/epics/modules/areaDetector/configure/CONFIG_SITE.local
 COPY files/AD_RELEASE_LIBS.local /opt/epics/modules/areaDetector/configure/RELEASE_LIBS.local
 COPY files/AD_RELEASE_PRODS.local /opt/epics/modules/areaDetector/configure/RELEASE_PRODS.local
-COPY files/AD_RELEASE_SUPPORT.local /opt/epics/modules/areaDetector/configure/RELEASE_SUPPORT.local
 COPY files/AD_RELEASE.local /opt/epics/modules/areaDetector/configure/RELEASE.local
 
 # Build EPICS base
@@ -121,12 +120,11 @@ RUN cd /opt/epics/modules/calc && make
 RUN cd /opt/epics/modules/areaDetector && make
 
 # Build sim detector IOC
-RUN cd /opt/epics/modules/areaDetector/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
+RUN cd /opt/epics/modules/areaDetector/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector && make
 COPY files/AD_st_base.cmd /opt/epics/modules/areaDetector/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/st_base.cmd
 
-# Expose the standard EPICS ports
-EXPOSE 5064 5065
-EXPOSE 5064/udp
+# Expose the standard EPICS and V4 ports
+EXPOSE 5064 5065 5064/udp 5075 5076 5075/tcp 5076/udp
 
 # Set path
 RUN export PATH=/opt/epics/base/bin/linux-x86_64:$PATH

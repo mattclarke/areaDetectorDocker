@@ -12,7 +12,7 @@ To run on Linux:
 
 To run on MacOs:
 
-`docker run -p 5064:5064 -p 5065:5065 -p 5064:5064/udp  -i sim_ad`
+`docker run -p 5064:5064 -p 5065:5065 -p 5064:5064/udp -p 5075:5075 -p 5076:5076 -p 5076:5076/udp -i sim_ad`
 
 The IOC is set to start producing simulated data on start up.
 The interesting PVs for data are:
