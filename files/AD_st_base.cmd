@@ -72,7 +72,7 @@ dbLoadRecords("NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,
 # Create a standard arrays plugin, set it to get data from FFT plugin.
 NDStdArraysConfigure("Image2", 3, 0, "FFT1", 0)
 # This waveform allows transporting 64-bit images, so it can handle any detector data type at the expense of more memory and bandwidth
-dbLoadRecords("NDStdArrays.template", "P=$(PREFIX),R=image2:,PORT=Image2,ADDR=0,TIMEOUT=1,NDARRAY_PORT=FFT1,TYPE=Float64,FTVL=DOUBLE,NELEMENTS=12000000")
+#dbLoadRecords("NDStdArrays.template", "P=$(PREFIX),R=image2:,PORT=Image2,ADDR=0,TIMEOUT=1,NDARRAY_PORT=FFT1,TYPE=Float64,FTVL=DOUBLE,NELEMENTS=12000000")
 
 set_requestfile_path("$(ADSIMDETECTOR)/simDetectorApp/Db")
 
@@ -85,8 +85,8 @@ asynSetTraceIOMask("$(PORT)",0,2)
 
 iocInit()
 
-dbpf 13SIM1:image1:EnableCallbacks 1
-dbpf 13SIM1:cam1:Acquire 1
-
 # save things every thirty seconds
 create_monitor_set("auto_settings.req", 30, "P=$(PREFIX)")
+
+dbpf 13SIM1:image1:EnableCallbacks 1
+dbpf 13SIM1:cam1:Acquire 1

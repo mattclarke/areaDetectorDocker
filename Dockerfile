@@ -94,9 +94,9 @@ RUN mv ADSimDetector /opt/epics/modules/areaDetector
 
 # Copy AreaDetector config files in
 COPY files/AD_CONFIG_SITE.local /opt/epics/modules/areaDetector/configure/CONFIG_SITE.local
+COPY files/AD_RELEASE.local /opt/epics/modules/areaDetector/configure/RELEASE.local
 COPY files/AD_RELEASE_LIBS.local /opt/epics/modules/areaDetector/configure/RELEASE_LIBS.local
 COPY files/AD_RELEASE_PRODS.local /opt/epics/modules/areaDetector/configure/RELEASE_PRODS.local
-COPY files/AD_RELEASE.local /opt/epics/modules/areaDetector/configure/RELEASE.local
 
 # Build EPICS base
 RUN cd /opt/epics/base && make
