@@ -4,11 +4,17 @@
 
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
-# SUPPORT=/corvette/home/epics/devel
-# -include $(TOP)/../configure/SUPPORT.$(EPICS_HOST_ARCH)
+SUPPORT=/opt/epics/modules
+-include $(TOP)/../configure/SUPPORT.$(EPICS_HOST_ARCH)
 
 # ASYN is needed to compile asyn device support
-ASYN=/opt/epics/modules/asyn
+ASYN=$(SUPPORT)/asyn
+
+# AUTOSAVE is needed for the test application only
+AUTOSAVE=$(SUPPORT)/autosave
+
+# BUSY is this module
+BUSY=$(SUPPORT)/busy
 
 # EPICS_BASE usually appears last so other apps can override stuff:
 EPICS_BASE=/opt/epics/base
@@ -17,3 +23,9 @@ EPICS_BASE=/opt/epics/base
 #Capfast users may need the following definitions
 #CAPFAST_TEMPLATES=
 #SCH2EDIF_PATH=
+
+# These lines allow developers to override these RELEASE settings
+# without having to modify this file directly.
+-include $(TOP)/../RELEASE.local
+-include $(TOP)/../RELEASE.$(EPICS_HOST_ARCH).local
+-include $(TOP)/configure/RELEASE.local
