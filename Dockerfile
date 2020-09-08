@@ -3,99 +3,100 @@ FROM ubuntu:bionic
 USER root
 
 # Install the things needed
-RUN apt-get update
-RUN apt-get install -yq build-essential
-RUN apt-get install -yq libreadline7 libreadline-dev
-RUN apt-get install -yq wget
-RUN apt-get install -yq git
+RUN apt update
+RUN apt install -yq build-essential
+RUN apt install -yq libreadline7 libreadline-dev
+RUN apt install -yq curl
+RUN apt install -yq git
 
-# Download EPICS base
-RUN wget --quiet https://epics.anl.gov/download/base/base-3.15.5.tar.gz
-RUN tar xvzf base-3.15.5.tar.gz
+# Setup directory structure
 RUN mkdir /opt/epics
-RUN mv base-3.15.5 /opt/epics/base
-RUN rm base-3.15.5.tar.gz
+RUN mkdir /opt/epics/modules
+
+# Download EPICS 7 base
+RUN curl -L https://epics-controls.org/download/base/base-7.0.4.1.tar.gz > base.tar.gz
+RUN tar xvzf base.tar.gz
+RUN rm base.tar.gz
+RUN mv base-* /opt/epics/base
 
 # Download ASYN
-RUN wget --quiet https://www.aps.anl.gov/epics/download/modules/asyn4-33.tar.gz
-RUN tar xvzf asyn4-33.tar.gz
-RUN mkdir /opt/epics/modules
-RUN mv asyn4-33 asyn
+RUN curl -L https://epics.anl.gov/download/modules/asyn4-38.tar.gz > asyn.tar.gz
+RUN tar xvzf asyn.tar.gz
+RUN rm asyn.tar.gz
+RUN mv asyn4-* asyn
 RUN mv asyn /opt/epics/modules
 # Copy in custom RELEASE file
 COPY files/asyn_RELEASE /opt/epics/modules/asyn/configure/RELEASE
-RUN rm asyn4-33.tar.gz
 
 # Download Autosave
-RUN wget --quiet https://github.com/epics-modules/autosave/archive/R5-9.tar.gz
-RUN tar xvzf R5-9.tar.gz
-RUN mv autosave-R5-9 autosave
+RUN curl -L https://github.com/epics-modules/autosave/archive/R5-10-1.tar.gz > autosave.tar.gz
+RUN tar xvzf autosave.tar.gz
+RUN rm autosave.tar.gz
+RUN mv autosave-* autosave
 RUN mv autosave /opt/epics/modules
 # Copy in custom RELEASE file
 COPY files/autosave_RELEASE /opt/epics/modules/autosave/configure/RELEASE
-RUN rm R5-9.tar.gz
 
 # Download Busy
-RUN wget --quiet https://github.com/epics-modules/busy/archive/R1-7.tar.gz
-RUN tar xvzf R1-7.tar.gz
-RUN mv busy-R1-7 busy
+RUN curl -L https://github.com/epics-modules/busy/archive/R1-7-2.tar.gz > busy.tar.gz
+RUN tar xvzf busy.tar.gz
+RUN rm busy.tar.gz
+RUN mv busy* busy
 RUN mv busy /opt/epics/modules
 # Copy in custom RELEASE file
 COPY files/busy_RELEASE /opt/epics/modules/busy/configure/RELEASE
-RUN rm R1-7.tar.gz
 
 # Download SSCAN
-RUN wget --quiet https://github.com/epics-modules/sscan/archive/R2-11.tar.gz
-RUN tar xvzf R2-11.tar.gz
-RUN mv sscan-R2-11 sscan
+RUN curl -L https://github.com/epics-modules/sscan/archive/R2-11-3.tar.gz > sscan.tar.gz
+RUN tar xvzf sscan.tar.gz
+RUN rm sscan.tar.gz
+RUN mv sscan* sscan
 RUN mv sscan /opt/epics/modules
 # Copy in custom RELEASE file
 COPY files/sscan_RELEASE /opt/epics/modules/sscan/configure/RELEASE
-RUN rm R2-11.tar.gz
 
 # Download Calc
-RUN wget --quiet https://github.com/epics-modules/calc/archive/R3-7-1.tar.gz
-RUN tar xvzf R3-7-1.tar.gz
-RUN mv calc-R3-7-1 calc
+RUN curl -L https://github.com/epics-modules/calc/archive/R3-7-4.tar.gz > calc.tar.gz
+RUN tar xvzf calc.tar.gz
+RUN rm calc.tar.gz
+RUN mv calc* calc
 RUN mv calc /opt/epics/modules
 # Copy in custom RELEASE file
 COPY files/calc_RELEASE /opt/epics/modules/calc/configure/RELEASE
-RUN rm R3-7-1.tar.gz
 
 # Download AreaDetector
-RUN wget --quiet https://github.com/areaDetector/areaDetector/archive/R3-3-2.tar.gz
-RUN tar xvzf R3-3-2.tar.gz
-RUN mv areaDetector-R3-3-2 areaDetector
+RUN curl -L https://github.com/areaDetector/areaDetector/archive/R3-9.tar.gz > ad.tar.gz
+RUN tar xvzf ad.tar.gz
+RUN rm ad.tar.gz
+RUN mv areaDetector* areaDetector
 RUN mv areaDetector /opt/epics/modules
-RUN rm R3-3-2.tar.gz
 
 # Download ADCore
-RUN wget --quiet https://github.com/areaDetector/ADCore/archive/R3-3-2.tar.gz
-RUN tar xvzf R3-3-2.tar.gz
-RUN mv ADCore-R3-3-2 ADCore
+RUN curl -L https://github.com/areaDetector/ADCore/archive/R3-9.tar.gz > adcore.tar.gz
+RUN tar xvzf adcore.tar.gz
+RUN rm adcore.tar.gz
+RUN mv ADCore* ADCore
 RUN mv ADCore /opt/epics/modules/areaDetector
-RUN rm R3-3-2.tar.gz
 
 # Download ADSupport
-RUN wget --quiet https://github.com/areaDetector/ADSupport/archive/R1-4.tar.gz
-RUN tar xvzf R1-4.tar.gz
-RUN mv ADSupport-R1-4 ADSupport
+RUN curl -L https://github.com/areaDetector/ADSupport/archive/R1-4.tar.gz > adsup.tar.gz
+RUN tar xvzf adsup.tar.gz
+RUN rm adsup.tar.gz
+RUN mv ADSupport* ADSupport
 RUN mv ADSupport /opt/epics/modules/areaDetector
-RUN rm R1-4.tar.gz
 
 # Download ADSimDetector
-RUN wget --quiet https://github.com/areaDetector/ADSimDetector/archive/R2-8.tar.gz
-RUN tar xvzf R2-8.tar.gz
-RUN mv ADSimDetector-R2-8 ADSimDetector
+RUN curl -L https://github.com/areaDetector/ADSimDetector/archive/R2-10.tar.gz > adsim.tar.gz
+RUN tar xvzf adsim.tar.gz
+RUN rm adsim.tar.gz
+RUN mv ADSimDetector* ADSimDetector
 RUN mv ADSimDetector /opt/epics/modules/areaDetector
-RUN rm R2-8.tar.gz
 
 # Copy AreaDetector config files in
 COPY files/AD_CONFIG_SITE.local /opt/epics/modules/areaDetector/configure/CONFIG_SITE.local
+COPY files/AD_RELEASE.local /opt/epics/modules/areaDetector/configure/RELEASE.local
 COPY files/AD_RELEASE_LIBS.local /opt/epics/modules/areaDetector/configure/RELEASE_LIBS.local
 COPY files/AD_RELEASE_PRODS.local /opt/epics/modules/areaDetector/configure/RELEASE_PRODS.local
-COPY files/AD_RELEASE_SUPPORT.local /opt/epics/modules/areaDetector/configure/RELEASE_SUPPORT.local
-COPY files/AD_RELEASE.local /opt/epics/modules/areaDetector/configure/RELEASE.local
 
 # Build EPICS base
 RUN cd /opt/epics/base && make
@@ -122,9 +123,8 @@ RUN cd /opt/epics/modules/areaDetector && make
 RUN cd /opt/epics/modules/areaDetector/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector && make
 COPY files/AD_st_base.cmd /opt/epics/modules/areaDetector/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/st_base.cmd
 
-# Expose the standard EPICS ports
-EXPOSE 5064 5065
-EXPOSE 5064/udp
+# Expose the standard EPICS and V4 ports
+EXPOSE 5064 5065 5064/udp 5075 5076 5075/tcp 5076/udp
 
 # Set path
 RUN export PATH=/opt/epics/base/bin/linux-x86_64:$PATH

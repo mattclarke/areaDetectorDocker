@@ -12,7 +12,9 @@
 # define INSTALL_LOCATION_APP here
 #INSTALL_LOCATION_APP=<fullpathname>
 
-# ASYN is needed for base classes
+SUPPORT=/opt/epics/modules
+
+# ASYN is needed for base classes 
 ASYN=$(SUPPORT)/asyn
 
 AREA_DETECTOR=$(SUPPORT)/areaDetector
@@ -28,9 +30,6 @@ EPICS_BASE=/opt/epics/base
 # If CONFIG_SITE.local defines WITH_PVA=YES and EPICS_BASE is prior to 7.0 then define the path here
 # If using EPICS_BASE 7.0 or later the PVA files are in base itself and no additional definitions are needed.
 #PVA=/corvette/usr/local/epics-devel/epicsV4/EPICS-CPP-4.6.0
-
-# This file can optionally override the definitions of EPICS_BASE and PVA for a specific EPICS_HOST_ARCH
--include $(AREA_DETECTOR)/configure/RELEASE_BASE.local.$(EPICS_HOST_ARCH)
 
 # PVA modules
 # For versions prior to EPICS base 7.0 use this

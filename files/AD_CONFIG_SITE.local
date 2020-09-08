@@ -11,13 +11,13 @@ BUILD_IOCS=YES
 #               Build the source code for this library in ADSupport if XXX_EXTERNAL=NO.
 # XXX_EXTERNAL  If NO then build the source code for this library in ADSupport.
 # XXX_INCLUDE   If XXX_EXTERNAL=YES then this is the path to the include files for XXX.
-#               However, if XXX is a system library whose include files are in a
+#               However, if XXX is a system library whose include files are in a 
 #               standard include search path then do not define XXX_INCLUDE.
 # XXX_LIB       If XXX_EXTERNAL=YES then this is the path to the library files for XXX.
-#               However, if XXX is a system library whose library files in a
+#               However, if XXX is a system library whose library files in a 
 #               standard library search path then do not define XXX_LIB.
 
-# The exception to the above is XML2.
+# The exception to the above is XML2. 
 # As of ADCORE R3-0 libxml2 is required for ADCore so WITH_XML2 is not supported
 # but the other XML2 flags are supported.
 
@@ -25,6 +25,7 @@ BUILD_IOCS=YES
 
 # BOOST is required for the ADCore/pluginTests unit tests
 WITH_BOOST     = NO
+BOOST_EXTERNAL = YES
 #BOOST_LIB     =
 #BOOST_INCLUDE =
 
@@ -33,19 +34,24 @@ WITH_BOOST     = NO
 #BOOST_USE_STATIC_LINK=YES
 
 # EPICS PVA is required for NDPluginPva, pvaDriver, and qsrv
-WITH_PVA  = NO
+WITH_PVA  = YES
 
 # WITH_QSRV controls whether IOCs are built with support for qsrv.
 # This is separate from WITH_PVA to allow PVA to be enabled but QSRV to be disabled.
 # This is needed on 3.14.12 where PVA is supported but QSRV is not.
 # Note that if WITH_QSRV=YES then WITH_PVA must also be YES
-WITH_QSRV = NO
+WITH_QSRV = YES
 
 # BLOSC is required to use the blosc compressors in the HDF5 plugin
 WITH_BLOSC     = YES
 BLOSC_EXTERNAL = NO
 #BLOSC_INCLUDE =
 #BLOSC_LIB     =
+
+# BITSHUFFLE is required to use the bitshuffle/LZ4 decompressors in the ADEiger driver
+# It can also be used to generate shareable libraries for the HDF5 compressor/decompressor
+WITH_BITSHUFFLE     = NO
+BITSHUFFLE_EXTERNAL = NO
 
 # GraphicsMagick is required for NDFileMagick and the URL driver.
 WITH_GRAPHICSMAGICK     = NO
@@ -54,7 +60,7 @@ GRAPHICSMAGICK_EXTERNAL = NO
 # in the Andor vendor library.  GraphickMagick provides a solution by allowing all external library
 # symbols to be prefixed with "Gm".  Enable using this by default.  However, if a system library
 # is used it may not be built with this option so this line should be commented out.
-GRAPHICSMAGICK_PREFIX_SYMBOLS = YES
+GRAPHICSMAGICK_PREFIX_SYMBOLS = NO
 #GRAPHICSMAGICK_INCLUDE =
 #GRAPHICSMAGICK_LIB     =
 
@@ -88,7 +94,7 @@ OPENCV_EXTERNAL = YES
 #OPENCV_INCLUDE =
 #OPENCV_LIB     =
 
-# SZIP is required for the NDFileHDF5 and NDFileNexus plugins.
+# SZIP is required for the NDFileHDF5 and NDFileNexus plugins.  
 # This may be optional in the future.
 WITH_SZIP     = YES
 SZIP_EXTERNAL = NO
@@ -101,20 +107,30 @@ TIFF_EXTERNAL = NO
 #TIFF_INCLUDE =
 #TIFF_LIB     =
 
-# XML2 is required for ADCore so there is no WITH_XML2.
+# XML2 is required for ADCore so there is no WITH_XML2.  
 XML2_EXTERNAL = NO
 #XML2_INCLUDE =
 #XML2_LIB     =
 
-# ZLIB is required for the NDFileHDF5 and NDFileNexus plugins.
+# ZLIB is required for the NDFileHDF5 and NDFileNexus plugins.  
 # This may be optional in the future.
 WITH_ZLIB     = YES
 ZLIB_EXTERNAL = NO
 #ZLIB_INCLUDE =
 #ZLIB_LIB     =
 
+# ARAVIS is required for aravisGigE and ADAravis
+# Only available on Linux
+#ARAVIS_LIB      = /usr/local/lib
+ARAVIS_INCLUDE  = /usr/local/include/aravis-0.8
+# Location of GLIB include files and libraries.  This is needed for aravis.
+# Our system has include files for glib-2.0 in 2 different places
+GLIB_INCLUDE = /usr/include/glib-2.0 /usr/lib64/glib-2.0/include
+glib-2.0_DIR = /usr/lib64
+
 # The definitions above can be overridden in the following files.
 # The files are searched in this order, with the last definition being used.
 #    CONFIG_SITE.local.$(OS_CLASS)
-#    CONFIG_SITE.local.$(EPICS_HOST_ARCH)
+#    CONFIG_SITE.local.$(EPICS_HOST_ARCH) 
 #    CONFIG_SITE.local.$(EPICS_HOST_ARCH).$(T_A)
+
