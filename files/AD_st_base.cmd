@@ -67,10 +67,10 @@ dbLoadRecords("NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,
 #dbLoadRecords("NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),TYPE=Float64,FTVL=DOUBLE,NELEMENTS=12000000")
 
 # Load all other plugins using commonPlugins.cmd
-< $(ADCORE)/iocBoot/commonPlugins.cmd
+#< $(ADCORE)/iocBoot/commonPlugins.cmd
 
 # Create a standard arrays plugin, set it to get data from FFT plugin.
-NDStdArraysConfigure("Image2", 3, 0, "FFT1", 0)
+#NDStdArraysConfigure("Image2", 3, 0, "FFT1", 0)
 # This waveform allows transporting 64-bit images, so it can handle any detector data type at the expense of more memory and bandwidth
 #dbLoadRecords("NDStdArrays.template", "P=$(PREFIX),R=image2:,PORT=Image2,ADDR=0,TIMEOUT=1,NDARRAY_PORT=FFT1,TYPE=Float64,FTVL=DOUBLE,NELEMENTS=12000000")
 
@@ -83,10 +83,20 @@ asynSetTraceIOMask("$(PORT)",0,2)
 #asynSetTraceMask("FileNexus",0,255)
 #asynSetTraceMask("SIM2",0,255)
 
+# Optional: load NDPluginPva plugin
+NDPvaConfigure("PVA1", $(QSIZE), 0, "$(PORT)", 0, $(PREFIX)Pva1:Image, 0, 0, 0)
+dbLoadRecords("NDPva.template",  "P=$(PREFIX),R=Pva1:, PORT=PVA1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT)")
+
 iocInit()
+startPVAServer
 
-# save things every thirty seconds
-create_monitor_set("auto_settings.req", 30, "P=$(PREFIX)")
-
+# Start standard acquiring
 dbpf 13SIM1:image1:EnableCallbacks 1
 dbpf 13SIM1:cam1:Acquire 1
+
+# Start NDPluginPva acquiring
+dbpf 13SIM1:Pva1:EnableCallbacks 1
+dbpf 13SIM1:Pva1:Acquire 1
+
+# save things every thirty seconds
+#create_monitor_set("auto_settings.req", 30, "P=$(PREFIX)")

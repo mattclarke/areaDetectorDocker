@@ -30,3 +30,7 @@ For control:
 * 13SIM1:cam1:DetectorState_RBV     (detector state as a string)
 
 There may be a corresponding _RBV PV for data-related PVs
+
+For the NDPluginPva the interesting PVs are:
+* 13SIM1:Pva1:Image                 (all the data and other metadata like the dimensions)
+* 13SIM1:Pva1:ColorMode
